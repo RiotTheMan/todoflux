@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private final TokenService tokenService;
 
@@ -21,9 +21,9 @@ public class AuthController {
 
     @GetMapping("/token")
     public String token(Authentication authentication) {
-    LOG.debug("Token requested for user: '{}'", authentication.getName());
+    log.debug("Token requested for user: '{}'", authentication.getName());
     String token = tokenService.generateToken(authentication);
-    LOG.debug("Token granted {}", token);
+    log.debug("Token granted {}", token);
     return token;
     };
 
