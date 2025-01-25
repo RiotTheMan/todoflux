@@ -51,20 +51,9 @@ public class SecurityConfig {
         return new ProviderManager(authProvider);
     }
 
-    // Make a SQL insert later?
-//    @Bean
-//    public UserDetailsService user() {
-//        return new InMemoryUserDetailsManager(
-//                User.withUsername("admin")
-//                        .password("{noop}fluxpassword")
-//                        .authorities("read")
-//                        .build());
-//    }
-
     @Bean
     JdbcUserDetailsManager users(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-        return jdbcUserDetailsManager;
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
@@ -73,7 +62,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests( auth -> auth
-                    .requestMatchers("api/auth/token").permitAll()
+                    .requestMatchers("api/auth/token", "api/auth/register").permitAll()
                     .anyRequest().authenticated())
             // Resource Server
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
