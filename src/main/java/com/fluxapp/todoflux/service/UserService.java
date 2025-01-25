@@ -42,4 +42,15 @@ public class UserService {
         // Return the user ID
         return fluxUser.getId();
     }
+
+
+    private Boolean verifyLoginRequest(UserLoginRequest userLoginRequest) {
+        Optional<Optional<FluxUser>> userOptional = Optional.ofNullable(
+                userRepository.findByUsernameOrEmail(userLoginRequest.getUsername(), userLoginRequest.getPassword())
+        );
+
+        return userOptional.map(user -> passwordEncoder.matches(userLoginRequest.getPassword(), user.get().getPassword()))
+                .orElse(false);
+    }
+
 }
