@@ -23,9 +23,6 @@ public class TodoItem {
     @JoinColumn(name = "user_id", nullable = false)
     private FluxUser user;
 
-    @OneToMany(mappedBy = "todoItem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<CheckItem> items;
-
     @Transient
     private int totalItemsCount;
 
@@ -45,8 +42,4 @@ public class TodoItem {
     public FluxUser getUser() { return user; }
     public void setUser(FluxUser user) { this.user = user; }
 
-    public List<CheckItem> getItems() { return items; }
-    public void setItems(List<CheckItem> items) { this.items = items; }
-
-    public int getTotalItemsCount() { return (items != null) ? items.size() : 0; }
 }

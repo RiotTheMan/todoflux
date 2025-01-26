@@ -33,7 +33,6 @@ public class CheckItemController {
             @RequestParam Long id,
             @RequestParam String title
     ) {
-
         int success = checkItemService.updateCheckItemTitle(id, title);
         if (success > 0) {
             return ResponseEntity.ok().build();

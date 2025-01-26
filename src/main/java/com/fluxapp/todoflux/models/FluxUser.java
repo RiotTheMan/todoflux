@@ -27,9 +27,6 @@ public class FluxUser {
     @Column(nullable = false)
     private boolean active;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<TodoItem> todos;
-
     // Constructors
     public FluxUser() {}
 
@@ -50,6 +47,4 @@ public class FluxUser {
     public void setPassword(String password) { this.password = password; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
-    public List<TodoItem> getTodos() { return todos; }
-    public void setTodos(List<TodoItem> todos) { this.todos = todos; }
 }
