@@ -1,21 +1,29 @@
 package com.fluxapp.todoflux.controller;
 
 import com.fluxapp.todoflux.models.CheckItem;
+import com.fluxapp.todoflux.models.TodoItem;
+import com.fluxapp.todoflux.repository.CheckItemRepository;
+import com.fluxapp.todoflux.repository.TodoItemRepository;
 import com.fluxapp.todoflux.service.CheckItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/check")
 public class CheckItemController {
 
     private final CheckItemService checkItemService;
+    private final CheckItemRepository checkItemRepository;
+    private final TodoItemRepository todoItemRepository;
 
-    public CheckItemController(CheckItemService checkItemService) {
+    public CheckItemController(CheckItemService checkItemService, CheckItemRepository checkItemRepository, TodoItemRepository todoItemRepository) {
         this.checkItemService = checkItemService;
+        this.checkItemRepository = checkItemRepository;
+        this.todoItemRepository = todoItemRepository;
     }
 
     @PostMapping("/create")
@@ -55,6 +63,23 @@ public class CheckItemController {
     public ResponseEntity<List<CheckItem>> getAllCheckItemsByTodoId(@RequestParam String todoId) {
         List<CheckItem> items = checkItemService.getCheckItemsByTodoId(todoId);
         return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/getTodoTitle")
+    public ResponseEntity<String> getTodoTitle(@RequestParam String todoId) {
+        Optional<TodoItem> todo = todoItemRepository.findById(Long.valueOf(todoId));
+
+        if (todo.isEmpty()) {
+            return ResponseEntity.badRequest().body("Todo not found");
+        }
+
+        return ResponseEntity.ok(todo.get().getTitle());
+    }
+
+    @GetMapping("/getCheckAmounts")
+    public int getCheckAmounts(@RequestParam String todoId) {
+        List<CheckItem> checkItems = checkItemService.getCheckItemsByTodoId(todoId);
+        return checkItems.size();
     }
 
 }

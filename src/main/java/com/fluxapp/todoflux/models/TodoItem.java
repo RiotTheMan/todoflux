@@ -41,5 +41,4 @@ public class TodoItem {
     public void setTitle(String title) { this.title = title; }
     public FluxUser getUser() { return user; }
     public void setUser(FluxUser user) { this.user = user; }
-
 }

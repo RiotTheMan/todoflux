@@ -24,4 +24,8 @@ public interface TodoItemRepository extends CrudRepository<TodoItem, Long> {
     @Query("UPDATE TodoItem t SET t.title = :title WHERE t.id = :id")
     void updateTodoTitle(@Param("id") Long id, @Param("title") String title);
 
+    @Modifying
+    @Query("DELETE FROM TodoItem t WHERE t.id = :id")
+    int deleteTodoItemById(@Param("id") Long id);
+
 }
